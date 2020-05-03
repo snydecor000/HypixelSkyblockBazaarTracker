@@ -39,22 +39,22 @@ public class App {
         }
 
         while(true){
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            Date date = new Date();
-            String timeStamp = dateFormat.format(date);
-
             //Get the info on all the products and put it into the Hash Map
             int count = 0;//Counter that pauses the inquiry every 50 items
             for(String p : products.keySet()) {
                 getProductDetails(p);
                 if(count > 50){
-                    Thread.sleep(15000);
+                    Thread.sleep(20000);
                     count = 0;
                 }
                 Thread.sleep(200);
                 count++;
             }
 
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+            String timeStamp = dateFormat.format(date);
+            
             for(String p : products.keySet()){
                 File file = new File("data\\"+p+".csv");
                 if(!file.exists()){file.createNewFile();}
@@ -64,7 +64,7 @@ public class App {
                 out.close();
             }
             System.out.println("New Entry: " + timeStamp);
-            Thread.sleep(1000*60*9);
+            Thread.sleep(1000*60*3);
         }
     }
 
@@ -90,8 +90,8 @@ public class App {
         }
         topSell = Math.round(topSell * 100.0)/100.0;//Round to hundreths place
         topBuy = Math.round(topBuy * 100.0)/100.0;
-        products.get(productID).add(topBuy);
-        products.get(productID).add(topSell);
+        products.get(productID).add(0,topBuy);
+        products.get(productID).add(1,topSell);
     }
 
     private static String readAll(Reader rd) throws IOException {
